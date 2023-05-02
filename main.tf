@@ -1,7 +1,7 @@
 
 resource "azurerm_resource_group" "IaC-TF-RG" {
   name     = "IaC-TF-RG"
-  location = "saf-north"
+  location = "southafricanorth"
 }
 
 resource "azurerm_virtual_network" "IaC-TF-VNET1" {
