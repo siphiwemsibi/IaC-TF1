@@ -15,7 +15,7 @@ resource "azurerm_virtual_network" "IaC-TF-VNET1" {
 resource "azurerm_subnet" "IaC-TF-SUB1" {
   name                 = "internal"
   resource_group_name  = azurerm_resource_group.IaC-TF-RG.name
-  virtual_network_name = azurerm_virtual_network.IaC-TF-RG.name
+  virtual_network_name = azurerm_virtual_network.IaC-TF-VNET1.name
   address_prefixes     = ["10.0.2.0/24"]
 }
 
