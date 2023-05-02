@@ -31,6 +31,11 @@ resource "azurerm_network_interface" "IaC-TF-NIC1" {
   }
 }
 
+resource "tls_private_key" "VM1_ssh" {
+  algorithm = "RSA"
+  rsa_bits  = 4096
+}
+
 resource "azurerm_linux_virtual_machine" "IaC-TF-VM1" {
   name                = "IaC-TF-VM1"
   resource_group_name = azurerm_resource_group.IaC-TF-RG.name
@@ -43,7 +48,7 @@ resource "azurerm_linux_virtual_machine" "IaC-TF-VM1" {
 
   admin_ssh_key {
     username   = "adminuser"
-    public_key = file("~/.ssh/id_rsa.pub")
+    public_key = tls_private_key.VM1_ssh.public_key_openssh
   }
 
   os_disk {
