@@ -1,33 +1,33 @@
 
 resource "azurerm_resource_group" "IaC-TF-RG" {
   name     = var.rgName
-  location = var.location
+  location = local.location
 }
 
 resource "azurerm_virtual_network" "IaC-TF-VNET1" {
-  name                = var.vnetName
+  name                = local.vnetName
   location            = azurerm_resource_group.IaC-TF-RG.location
   resource_group_name = azurerm_resource_group.IaC-TF-RG.name
-  address_space       = var.vnetAddress
+  address_space       = local.vnetAddress
 
 }
 
 resource "azurerm_subnet" "IaC-TF-SUB1" {
-  name                 = var.subnetName
+  name                 = local.subnetName
   resource_group_name  = azurerm_resource_group.IaC-TF-RG.name
   virtual_network_name = azurerm_virtual_network.IaC-TF-VNET1.name
-  address_prefixes     = var.subnetAddress
+  address_prefixes     = local.subnetAddress
 }
 
 resource "azurerm_network_interface" "IaC-TF-NIC1" {
-  name                = var.nicName
+  name                = local.nicName
   location            = azurerm_resource_group.IaC-TF-RG.location
   resource_group_name = azurerm_resource_group.IaC-TF-RG.name
 
   ip_configuration {
-    name                          = var.ipName
+    name                          = local.ipName
     subnet_id                     = azurerm_subnet.IaC-TF-SUB1.id
-    private_ip_address_allocation = var.ipAllocation
+    private_ip_address_allocation = local.ipAllocation
   }
 }
 
@@ -37,17 +37,17 @@ resource "tls_private_key" "VM1_ssh" {
 }
 
 resource "azurerm_linux_virtual_machine" "IaC-TF-VM1" {
-  name                = var.vmName
+  name                = local.vmName
   resource_group_name = azurerm_resource_group.IaC-TF-RG.name
   location            = azurerm_resource_group.IaC-TF-RG.location
+  admin_username      = local.vmUsername
   size                = var.vmSize
-  admin_username      = var.vmUsername
   network_interface_ids = [
     azurerm_network_interface.IaC-TF-NIC1.id,
   ]
 
   admin_ssh_key {
-    username   = var.vmUsername
+    username   = local.vmUsername
     public_key = tls_private_key.VM1_ssh.public_key_openssh
   }
 
