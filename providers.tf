@@ -6,8 +6,8 @@ terraform {
     }
   }
   backend "azurerm" {
-    resource_group_name = "rg_tfstate"
-    storage_account_name = "siptfstateacc"
+    resource_group_name = "RG-Store"
+    storage_account_name = "sipstore1"
     container_name = "labtfstate"
     key = "terralab.tfstate"
   }
